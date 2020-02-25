@@ -1,15 +1,11 @@
-﻿/*Practical 3: Write C# code to do the  following 
- * Convert binary to decimal 
- * Convert decimal to hexadecimal 
- * Convert decimal to binary 
- * Convert decimal to octal
+﻿/* Practical 3: Write C# code to do the  following 
+ * a. Convert binary to decimal 
+ * b. Convert decimal to hexadecimal 
+ * c. Convert decimal to binary 
+ * d. Convert decimal to octal
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Practical3
 {
@@ -17,9 +13,11 @@ namespace Practical3
     {
         static void Main(string[] args)
         {
-            string binaryString;
             int decimalNumber;
-            bool flag = true; //to display error message while user enters invalid binary number
+
+            #region Binary To Decimal
+            bool flag = true;
+            string binaryString;
 
             //Take and validate user input in string format
             Console.WriteLine("Enter a binary number(31 bit Max)");
@@ -34,7 +32,90 @@ namespace Practical3
             ConvertBinaryToDecimal(binaryString, out decimalNumber);
             Console.WriteLine("Answer: " + decimalNumber);
 
+            #endregion
+
+            #region Decimal To Octal and Binary
+
+            //Declaration and initialisation
+            int number, newBase;
+
+            TakeDecimalInput(out decimalNumber);
+
+            Console.WriteLine("In which base you want to convert? (2 or 8)");
+            newBase = int.Parse(Console.ReadLine());
+
+            ConvertDecimalToBinaryOrOctal(decimalNumber, out number, newBase);
+            Console.WriteLine(number);
+
+            #endregion
+
+            #region Decimal To HexaDecimal
+            string hex;
+            TakeDecimalInput(out decimalNumber);
+            ConvertDecimalToHex(decimalNumber, out hex);
+            Console.WriteLine($"Hexadecimal equivalent of {decimalNumber} is {hex}");
+            #endregion
+
             Console.Read();
+        }
+
+        #region Conversion Methods
+
+        
+        private static void ConvertDecimalToHex(int decimalNumber, out string hex)
+        {
+            char[] modulo = new char[31]; //To store all the modulos of a decimal mumber after iteratively dividing by 8
+            int i = 0, temp;
+            hex = "";
+            //Find all the modulos and store them in an integer array
+            while (decimalNumber > 0)
+            {
+                temp = (char)(decimalNumber % 16);
+                if (temp > 9)
+                    modulo[i] = (char)(temp + 55);
+                else
+                    modulo[i] = (char)(temp+48);
+                decimalNumber /= 16;
+                i++;
+            }
+
+            i--; //decrease by 1 to manage the actual length of the number
+
+            //
+            for (; i >= 0; i--)
+            {
+                hex += modulo[i];
+            }
+        }
+
+       
+        /// <summary>
+        /// Converts decimal input to equivalent octal number
+        /// </summary>
+        /// <param name="decimalNumber">Decimal Number from user</param>
+        /// <param name="number">Converted Octal Number will be returned in this variable</param>
+        private static void ConvertDecimalToBinaryOrOctal(int decimalNumber, out int number, int newBase)
+        {
+            number = 0;
+            int[] modulo = new int[31]; //To store all the modulos of a decimal mumber after iteratively dividing by 8
+            int i = 0;
+            string numberString = ""; //To form a single string of all the modulos togather
+
+            //Find all the modulos and store them in an integer array
+            while(decimalNumber>0)
+            {
+                modulo[i++] = decimalNumber % newBase;
+                decimalNumber /= newBase;
+            }
+
+            i--; //decrease by 1 to manage the actual length of the number
+
+            //
+            for (; i >= 0 ; i--)
+            {
+                numberString += modulo[i].ToString();
+            }
+            number = int.Parse(numberString);
         }
 
         /// <summary>
@@ -56,5 +137,30 @@ namespace Practical3
                 decimalNumber += bit * (int)Math.Pow(2, powerCounter++);
             }
         }
+        #endregion
+
+        #region Helper Method
+        /// <summary>
+        /// Prompt user to input decimal number
+        /// </summary>
+        /// <param name="decimalNumber"></param>
+        /// <param name="numberString"></param>
+        private static void TakeDecimalInput(out int decimalNumber)
+        {
+            string numberString;
+            bool flag = true; //to display error message while user enters invalid binary/decimal number
+
+            //Take and validate user input
+            Console.Write("Enter Decimal Number: ");
+            do
+            {
+                if (!flag) //only execute if user have entered invalid decimal number
+                    Console.WriteLine("Please enter a valid decimal number");
+                numberString = Console.ReadLine();
+                flag = false; //will display error message in every subsequent iteration of this loop (if this loop continuous)
+            } while (!int.TryParse(numberString, out decimalNumber));
+        }
+
+        #endregion
     }
 }
