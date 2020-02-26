@@ -1,8 +1,10 @@
-﻿using System;
+﻿/* Practical 4
+ * 'Write C# code to convert infix notation to postfix notation. 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Practical4
 {
@@ -83,7 +85,7 @@ namespace Practical4
         }
 
         /// <summary>
-        /// return the priority of the given operator
+        /// return the priority of the given operator 
         /// </summary>
         /// <param name="ch">The operator for which we want to find priority</param>
         /// <returns></returns>
@@ -92,7 +94,7 @@ namespace Practical4
             switch (ch)
             {
                 case '(':
-                    return 0;
+                    return 0; // Minimum 
                 case '+':
                 case '-':
                     return 1;
@@ -100,9 +102,9 @@ namespace Practical4
                 case '/':
                     return 2;
                 case '^':
-                    return 3;
+                    return 3; //Maximum
                 default:
-                    return 4;
+                    return 4; //Should never be executed for a valid infix expression
             }
         }
     }
