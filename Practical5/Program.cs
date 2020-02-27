@@ -20,35 +20,42 @@ namespace Practical5
             //Declaration and Innitialisation
             int digits;
             bool flag = true;
-            string numbeString;
-            string numberInWords = "";
-            
-                      // Take and validate input from the user
+            string numberString;
+            string numberInWords = "";          
+            // Take and validate input from the user
             do
             {
                 do
                 {
                     if (flag == false)
                         Console.WriteLine("Please enter a valid decimal number or 'q' to EXIT");
-                    numbeString = Console.ReadLine();
-                    if (numbeString == "q")
+                    numberString = Console.ReadLine();
+                    if (numberString == "q")
                         System.Environment.Exit(0);
                     flag = false;
-                } while (!int.TryParse(numbeString, out digits));
-                numbeString = numbeString.TrimStart('0');
+                } while (!int.TryParse(numberString, out digits));
+                numberString = numberString.TrimStart('0');
 
-                if (numbeString.Length < 3)
-                    numberInWords = upToTwoDigits(numbeString);
-                else if (numbeString.Length < 4)
-                    numberInWords = threeDigits(numbeString);
-                else if (numbeString.Length < 6)
-                    numberInWords = upToFiveDigits(numbeString);
-                else if (numbeString.Length < 8)
-                    numberInWords = upToSevenDigits(numbeString);
+                if (numberString.Length < 3)
+                    numberInWords = upToTwoDigits(numberString);
+                else if (numberString.Length < 4)
+                    numberInWords = threeDigits(numberString);
+                else if (numberString.Length < 6)
+                    numberInWords = upToFiveDigits(numberString);
+                else if (numberString.Length < 8)
+                    numberInWords = upToSevenDigits(numberString);
+                else if (numberInWords.Length < 10)
+                    numberInWords = upToNineDigits(numberString);
 
                 Console.WriteLine(numberInWords);
                 numberInWords = "";
             } while (true);
+        }
+
+        private static string upToNineDigits(string numberString)
+        {
+            //TODO: Complete implementation for Crores
+            return "To be implemented for Crores\n";
         }
 
         private static string upToSevenDigits(string numbeString)
@@ -57,15 +64,18 @@ namespace Practical5
             string thousands;
             string hundreds;
 
+            //Find Lacs portion 
             if (numbeString.Length == 6)
                 lacs = upToTwoDigits(numbeString.Substring(0, 1)) + " " + denomination[2];
             else
                 lacs = upToTwoDigits(numbeString.Substring(0, 2)) + " " + denomination[2];
 
+            //Find thousands portion
             thousands = upToTwoDigits(numbeString.Substring(1, 2));
             if (thousands != "")
                 thousands += " " + denomination[1];
 
+            //Find hundred portion
             hundreds = threeDigits(numbeString.Substring(3));
 
             return $"{lacs} {thousands} {hundreds}";
