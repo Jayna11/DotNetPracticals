@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Practical_1
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Rectangle");
             Pattern1();
